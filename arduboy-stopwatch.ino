@@ -1,5 +1,5 @@
 #include <Arduboy2.h>
-#define TOTAL 2
+#define TOTAL 9
 
 String pad2(int n) {
     return n < 10 ? ("0" + String(n)) : String(n);
@@ -47,27 +47,23 @@ class Timer {
 Arduboy2 arduboy;
 int index = 0;
 Timer timers[TOTAL];
-Timer timer;
 
 void setup() {
     arduboy.begin();
     arduboy.setFrameRate(30);
-
-    for (int i = 0; i < TOTAL; i ++) {
-        timers[i] = Timer();
-    }
-    timer = timers[index];
 }
 
 void loop() {
     if (!(arduboy.nextFrame()))
         return;
 
+    const Timer& timer = timers[index];
+
     arduboy.pollButtons();
     if (arduboy.justPressed(DOWN_BUTTON) && index < TOTAL - 1) {
-        timer = timers[++ index];
+        index ++;
     } else if (arduboy.justPressed(UP_BUTTON) && index > 0) {
-        timer = timers[-- index];
+        index --;
     } else if (arduboy.justPressed(A_BUTTON)) {
         timer.toggle();
     } else if (arduboy.justPressed(B_BUTTON)) {
